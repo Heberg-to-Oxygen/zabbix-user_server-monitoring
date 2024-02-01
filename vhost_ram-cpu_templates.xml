@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2023-04-21T13:38:28Z</date>
+    <groups>
+        <group>
+            <name>Templates</name>
+        </group>
+        <group>
+            <name>Templates/Vigicorp</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Vhost Ram CPU - Vigicorp</template>
+            <name>Vhost Ram CPU - Vigicorp</name>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+                <group>
+                    <name>Templates/Vigicorp</name>
+                </group>
+            </groups>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Users list</name>
+                    <key>Vhost.users</key>
+                    <delay>1h</delay>
+                    <lifetime>7d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Vhost: CPU for user {#USER}</name>
+                            <key>Vhost.users.cpu[&quot;{#USER}&quot;]</key>
+                            <value_type>FLOAT</value_type>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{avg(3h)}&gt;{$CPU.AVERAGE}</expression>
+                                    <name>AVG CPU &gt; {$CPU.AVERAGE}% 3h {#USER}</name>
+                                    <priority>WARNING</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>AVG CPU &gt; {$CPU.HIGH}% 3h {#USER}</name>
+                                            <expression>{Vhost Ram CPU - Vigicorp:Vhost.users.cpu[&quot;{#USER}&quot;].avg(3h)}&gt;{$CPU.HIGH}</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{avg(3h)}&gt;{$CPU.HIGH}</expression>
+                                    <name>AVG CPU &gt; {$CPU.HIGH}% 3h {#USER}</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Vhost: RAM for user {#USER}</name>
+                            <key>Vhost.users.ram[&quot;{#USER}&quot;]</key>
+                            <value_type>FLOAT</value_type>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <name>Vhost {#USER}</name>
+                            <show_triggers>NO</show_triggers>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>1A7C11</color>
+                                    <item>
+                                        <host>Vhost Ram CPU - Vigicorp</host>
+                                        <key>Vhost.users.cpu[&quot;{#USER}&quot;]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                    <lld_macro_paths>
+                        <lld_macro_path>
+                            <lld_macro>{#USER}</lld_macro>
+                            <path>$.User</path>
+                        </lld_macro_path>
+                    </lld_macro_paths>
+                </discovery_rule>
+            </discovery_rules>
+            <macros>
+                <macro>
+                    <macro>{$CPU.AVERAGE}</macro>
+                    <value>2</value>
+                </macro>
+                <macro>
+                    <macro>{$CPU.HIGH}</macro>
+                    <value>5</value>
+                </macro>
+            </macros>
+            <screens>
+                <screen>
+                    <name>Vhost</name>
+                    <hsize>1</hsize>
+                    <vsize>1</vsize>
+                    <screen_items>
+                        <screen_item>
+                            <resourcetype>20</resourcetype>
+                            <style>0</style>
+                            <resource>
+                                <name>Vhost {#USER}</name>
+                                <host>Vhost Ram CPU - Vigicorp</host>
+                            </resource>
+                            <width>400</width>
+                            <height>150</height>
+                            <x>0</x>
+                            <y>0</y>
+                            <colspan>1</colspan>
+                            <rowspan>1</rowspan>
+                            <elements>0</elements>
+                            <valign>0</valign>
+                            <halign>1</halign>
+                            <dynamic>0</dynamic>
+                            <sort_triggers>0</sort_triggers>
+                            <url/>
+                            <application/>
+                            <max_columns>3</max_columns>
+                        </screen_item>
+                    </screen_items>
+                </screen>
+            </screens>
+        </template>
+    </templates>
+</zabbix_export>
